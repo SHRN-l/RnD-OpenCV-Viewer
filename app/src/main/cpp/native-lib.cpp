@@ -1,13 +1,12 @@
 #include <string>
 #include <jni.h>
-// Add this line to test
+
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
-#include <android/log.h> // <-- Add this for logging
+#include <android/log.h> 
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 
-// Define a tag for our logs
 #define LOG_TAG "Native-Lib"
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
 
@@ -18,7 +17,6 @@ Java_com_sharan_rnd_1opencv_1viewer_MainActivity_stringFromJNI(
         JNIEnv* env,
         jobject /* this */) {
 
-    // Add this line to test
     cv::Mat testMat;
     LOGD("OpenCV testMat created successfully.");
 
@@ -26,7 +24,6 @@ Java_com_sharan_rnd_1opencv_1viewer_MainActivity_stringFromJNI(
     return env->NewStringUTF(hello.c_str());
 }
 
-// --- ADD THIS NEW FUNCTION ---
 // This is the C++ side of our 'processFrame' native method
 
 extern "C" JNIEXPORT void JNICALL

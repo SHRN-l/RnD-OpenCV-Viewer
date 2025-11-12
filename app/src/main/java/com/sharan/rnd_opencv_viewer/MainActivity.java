@@ -1,4 +1,4 @@
-package com.sharan.rnd_opencv_viewer; // Make sure this package name matches yours
+package com.sharan.rnd_opencv_viewer; 
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,15 +9,15 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.opengl.GLSurfaceView; // <-- IMPORTED THIS
+import android.opengl.GLSurfaceView; 
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
 
-import javax.microedition.khronos.egl.EGLConfig; // <-- IMPORTED THIS
-import javax.microedition.khronos.opengles.GL10; // <-- IMPORTED THIS
+import javax.microedition.khronos.egl.EGLConfig; 
+import javax.microedition.khronos.opengles.GL10; 
 
 // We REMOVED TextureView.SurfaceTextureListener
 // We ADDED GLSurfaceView.Renderer
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements Camera.PreviewCal
     private static final int CAMERA_REQUEST_CODE = 100;
 
     // REMOVED: private TextureView textureView;
-    private GLSurfaceView glSurfaceView; // <-- ADDED THIS
+    private GLSurfaceView glSurfaceView; 
     private Camera camera;
     private byte[] mFrame;
     private SurfaceTexture mSurfaceTexture; // We need this to send preview to a dummy texture
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements Camera.PreviewCal
     public native void nativeOnSurfaceChanged(int width, int height);
     public native void nativeOnDrawFrame();
 
-    // Load our C++ library
+    // Load C++ library
     static {
         System.loadLibrary("rnd_opencv_viewer");
     }
@@ -149,19 +149,19 @@ public class MainActivity extends AppCompatActivity implements Camera.PreviewCal
     // --- GLSurfaceView.Renderer implementation ---
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        // Call our C++ function
+        // Call C++ function
         nativeOnSurfaceCreated();
     }
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
-        // Call our C++ function
+        // Call C++ function
         nativeOnSurfaceChanged(width, height);
     }
 
     @Override
     public void onDrawFrame(GL10 gl) {
-        // Call our C++ function
+        // Call C++ function
         nativeOnDrawFrame();
     }
 
