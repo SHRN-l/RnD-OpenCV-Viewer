@@ -20,6 +20,15 @@ project("rnd_opencv_viewer")
 # the target library name; in the sub-module's CMakeLists.txt, ${PROJECT_NAME}
 # is preferred for the same purpose.
 #
+# Define the path to your OpenCV SDK (relative to this CMakeLists.txt file)
+set(OpenCV_DIR "C:/Sharan/RnD-OpenCV-Viewer/opencv_sdk/sdk/native/jni")
+
+# Find the OpenCV package
+find_package(OpenCV REQUIRED)
+
+# Add OpenCV's include directories
+include_directories(${OpenCV_INCLUDE_DIRS})
+
 # In order to load a library into your app from Java/Kotlin, you must call
 # System.loadLibrary() and pass the name of the library defined here;
 # for GameActivity/NativeActivity derived applications, the same library name must be
@@ -31,7 +40,12 @@ add_library(${CMAKE_PROJECT_NAME} SHARED
 # Specifies libraries CMake should link to your target library. You
 # can link libraries from various origins, such as libraries defined in this
 # build script, prebuilt third-party libraries, or Android system libraries.
-target_link_libraries(${CMAKE_PROJECT_NAME}
-        # List libraries link to the target library
-        android
-        log)
+target_link_libraries(
+        # Your project's native library name
+        rnd_opencv_viewer 
+
+        # Link OpenCV
+        ${OpenCV_LIBS}
+
+        # Link the default Android logging library
+        ${log-lib} )
