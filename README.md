@@ -42,13 +42,13 @@ This project uses a hybrid architecture to pass data from the Java/Android layer
 ## Results
 
 **Original Image:**
-![Original Image](images\original_image.jpeg)
+![Original Image](images/original_image.jpeg)
 
 **Working Android App:**
-![Working Android App](images\sameple_image.jpeg)
+![Working Android App](images/sameple_image.jpeg)
 
 **TypeScript Web Viewer:**
-![TypeScript Web Viewer](images\website_image.png)
+![TypeScript Web Viewer](images/website_image.png)
 
 
 ---
