@@ -45,7 +45,7 @@ This project uses a hybrid architecture to pass data from the Java/Android layer
 <img src="images/original_image.jpeg" height="550" width="300">
 
 **Working Android App:**</br>
-<img src="images/sameple_image.jpeg" height="500" width="300">
+<img src="images/sample_image.jpeg" height="500" width="300">
 
 **TypeScript Web Viewer:**</br>
 <img src="images/website_image.png" height="400" width="300">
