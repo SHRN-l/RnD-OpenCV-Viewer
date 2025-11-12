@@ -48,4 +48,6 @@ target_link_libraries(
         ${OpenCV_LIBS}
 
         # Link the default Android logging library
-        ${log-lib} )
+        ${log-lib} 
+        GLESv2
+        )
