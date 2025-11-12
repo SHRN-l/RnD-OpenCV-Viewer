@@ -2,11 +2,14 @@
 #include <jni.h>
 // Add this line to test
 #include <opencv2/core.hpp>
+#include <opencv2/imgproc.hpp>
 #include <android/log.h> // <-- Add this for logging
 
 // Define a tag for our logs
 #define LOG_TAG "Native-Lib"
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+
+cv::Mat processedMat;
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_sharan_rnd_1opencv_1viewer_MainActivity_stringFromJNI(
@@ -35,10 +38,20 @@ Java_com_sharan_rnd_1opencv_1viewer_MainActivity_processFrame(
     // 1. Get the raw byte data from Java
     jbyte *data = env->GetByteArrayElements(frameData, 0);
 
-    // 2. JUST FOR NOW: Log a message to prove it's working
-    //    In the next phase, we'll put OpenCV code here
-    LOGD("C++ received a frame! Size: %d x %d", width, height);
+    // 2. Create a Mat from the raw camera data (NV21 format)
+    // The camera data is (height + height/2) x width,
+    // as it contains the Y plane (grayscale) followed by the UV plane (color)
+    cv::Mat matYUV(height + height / 2, width, CV_8UC1, (void*)data);
 
-    // 3. Release the byte data
+    // 3. Extract just the grayscale (Y) plane
+    // This is a "zero-copy" operation; it just points to the first part of matYUV
+    cv::Mat matGray = matYUV(cv::Rect(0, 0, width, height));
+
+    // 4. Apply Canny Edge Detection
+    // We'll re-use our global 'processedMat' to store the result
+    // We can also use matGray as the output to save memory, then copy
+    cv::Canny(matGray, processedMat, 80, 100);
+
+    // 5. Release the Java byte array
     env->ReleaseByteArrayElements(frameData, data, 0);
 }
