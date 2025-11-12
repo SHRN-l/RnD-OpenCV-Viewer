@@ -23,7 +23,22 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
 
     private TextureView textureView;
     private Camera camera;
+    private byte[] mFrame;
 
+    // --- Our new JNI function ---
+    public native void processFrame(int width, int height, byte[] frameData);
+
+    // This static block loads our C++ library (named "rnd_opencv_viewer")
+    static {
+        System.loadLibrary("rnd_opencv_viewer");
+    }
+
+    // This static block loads our C++ library (named "rnd_opencv_viewer")
+    // It matches the 'project("rnd_opencv_viewer")' in your CMakeLists.txt
+    static {
+        System.loadLibrary("rnd_opencv_viewer");
+    }
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +72,33 @@ public class MainActivity extends AppCompatActivity implements TextureView.Surfa
                 camera = Camera.open(); // Open the back camera
                 camera.setPreviewTexture(surface);
                 camera.setDisplayOrientation(90); // Adjust for portrait mode
+                // Set up the buffer for frame data
+                Camera.Size previewSize = camera.getParameters().getPreviewSize();
+                int dataSize = previewSize.width * previewSize.height * 3 / 2; // (for NV21 format)
+                mFrame = new byte[dataSize];
+
+                // Add the buffer to the camera
+                camera.addCallbackBuffer(mFrame);
+
+                // Set the callback that fires on every frame
+                camera.setPreviewCallbackWithBuffer(new Camera.PreviewCallback() {
+                    @Override
+                    public void onPreviewFrame(byte[] data, Camera camera) {
+                        // This is where the magic happens!
+                        // 'data' is our raw frame.
+                        if (data != null) {
+                            // Pass the frame to our C++ function
+                            processFrame(previewSize.width, previewSize.height, data);
+                        }
+
+                        // IMPORTANT: Re-add the buffer so the camera can use it for the *next* frame
+                        camera.addCallbackBuffer(mFrame);
+                    }
+                });
+
+                // Now start the preview
                 camera.startPreview(); // Start the live feed!
-                Log.d(TAG, "Camera preview started");
+                Log.d(TAG, "Camera preview started with callback");
             } catch (IOException e) {
                 Log.e(TAG, "Error setting camera preview", e);
             } catch (RuntimeException e) {
