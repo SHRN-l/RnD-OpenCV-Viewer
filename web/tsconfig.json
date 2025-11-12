@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es6",  // Compiles to modern JavaScript
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true
+  },
+  "files": [
+    "main.ts"  // Tells the compiler to ONLY look at main.ts
+  ],
+  "exclude": [
+    "node_modules",
+    "*.js"  // Tells the compiler to IGNORE all .js files
+  ]
+}
